@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
+import { Cart, CartItem } from '../../models/cart.model';
 
 @Component({
   selector: 'app-header',
@@ -15,4 +16,21 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
 
+  @Input()
+  get cart(): Cart {
+    return this._cart ;
+  }
+
+  set cart(cart: Cart) {
+    this._cart = cart ;
+
+    this.itemsQuantity = cart.items.map((item) => item.quantity).reduce((prev, current) => prev+ current, 0)
+  }
+  private _cart : Cart = {items: []}
+  itemsQuantity = 0 ;
+
+  getTotal(items: Array<CartItem>):number {
+    return items.map((item) => item.price * item.quantity)
+    .reduce((prev , current) => prev + current , 0)
+  }
 }
