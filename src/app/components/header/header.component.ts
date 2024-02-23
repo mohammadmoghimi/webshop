@@ -5,6 +5,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { Cart, CartItem } from '../../models/cart.model';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +17,9 @@ import { Cart, CartItem } from '../../models/cart.model';
 })
 export class HeaderComponent {
 
+    constructor(private cartService : CartService){
+
+    }
   @Input()
   get cart(): Cart {
     return this._cart ;
@@ -32,5 +36,8 @@ export class HeaderComponent {
   getTotal(items: Array<CartItem>):number {
     return items.map((item) => item.price * item.quantity)
     .reduce((prev , current) => prev + current , 0)
+  }
+  onClearCart () {
+    this.cartService.clearCart()
   }
 }

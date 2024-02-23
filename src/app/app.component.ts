@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
+import { Cart } from './models/cart.model';
+import { CartService } from './services/cart.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,15 @@ import { HeaderComponent } from './components/header/header.component';
   templateUrl:'./app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'store';
+  cart: Cart = {items:[]}
+  constructor(private cartService: CartService) {
+
+  }
+  ngOnInit(): void {
+      this.cartService.cart.subscribe((_cart) => {
+        this.cart = _cart
+      })
+  }
 }
